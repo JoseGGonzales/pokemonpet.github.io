@@ -1,0 +1,133 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f8ff;
+}
+
+h1 {
+    font-size: 36px;
+    margin: 20px 0;
+    color: #333;
+}
+
+#selectionScreen {
+    display: block;
+}
+
+.pokemon-selection img {
+    width: 150px;
+    height: 150px;
+    margin: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.pokemon-selection img:hover {
+    transform: scale(1.1);
+}
+
+#gameScreen {
+    display: none;
+}
+
+.game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pokemon {
+    margin-right: 30px;
+}
+
+#pokemonImg {
+    width: 150px;
+    height: 150px;
+}
+
+.bowl-container {
+    width: 100px;
+    height: 100px;
+}
+
+.bowl-container img {
+    width: 100%;
+    height: 100%;
+}
+
+.food-container {
+    margin: 20px auto;
+}
+
+.food {
+    width: 50px;
+    height: 50px;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.2s;
+}
+
+.food:active {
+    transform: scale(0.9);
+    cursor: grabbing;
+}
+
+.hunger-container {
+    position: relative;
+    margin: 30px auto;
+    width: 300px;
+}
+
+.hunger-bar {
+    width: 100%;
+    height: 30px;
+    background-color: #ddd;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+
+#hungerFill {
+    background-color: #ff6347;
+    height: 100%;
+    width: 50%;
+    transition: width 0.5s ease-in-out;
+}
+
+#hungerText {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 14px;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.buttons button:hover {
+    background-color: #45a049;
+}
+
+.stat {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+.stat p {
+    margin: 5px 0;
+}

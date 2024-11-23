@@ -4,155 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokémon Virtual Pet</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f8ff;
-        }
-
-        h1 {
-            font-size: 36px;
-            margin: 20px 0;
-            color: #333;
-        }
-
-        /* Pokémon Selection Screen */
-        #selectionScreen {
-            display: block;
-        }
-
-        .pokemon-selection img {
-            width: 150px;
-            height: 150px;
-            margin: 10px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .pokemon-selection img:hover {
-            transform: scale(1.1);
-        }
-
-        /* Main Game Screen */
-        #gameScreen {
-            display: none;
-        }
-
-        .game-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .pokemon {
-            margin-right: 30px;
-        }
-
-        #pokemonImg {
-            width: 150px;
-            height: 150px;
-        }
-
-        /* Bowl Container */
-        .bowl-container {
-            width: 100px;
-            height: 100px;
-        }
-
-        .bowl-container img {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Food */
-        .food-container {
-            margin: 20px auto;
-        }
-
-        .food {
-            width: 50px;
-            height: 50px;
-            cursor: grab;
-            user-select: none;
-            transition: transform 0.2s;
-        }
-
-        .food:active {
-            transform: scale(0.9);
-            cursor: grabbing;
-        }
-
-        /* Hunger Bar */
-        .hunger-container {
-            position: relative;
-            margin: 30px auto;
-            width: 300px;
-        }
-
-        .hunger-bar {
-            width: 100%;
-            height: 30px;
-            background-color: #ddd;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-        }
-
-        #hungerFill {
-            background-color: #ff6347; /* Red color for hunger */
-            height: 100%;
-            width: 50%;
-            transition: width 0.5s ease-in-out;
-        }
-
-        #hungerText {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            font-size: 14px;
-            color: #fff;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        }
-
-        /* Buttons */
-        .buttons {
-            margin: 20px auto;
-        }
-
-        .buttons button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin: 10px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: white;
-            transition: background-color 0.3s;
-        }
-
-        .buttons button:hover {
-            background-color: #45a049;
-        }
-
-        /* Stats */
-        .stat {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #333;
-        }
-
-        .stat p {
-            margin: 5px 0;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
     <h1>Pokémon Virtual Pet</h1>
 
     <!-- Pokémon Selection Screen -->
@@ -167,38 +21,26 @@
 
     <!-- Main Game Screen -->
     <div id="gameScreen">
-        <!-- Game Container -->
         <div class="game-container">
-            <!-- Pokémon Display -->
             <div class="pokemon">
                 <img id="pokemonImg" src="" alt="Chosen Pokémon">
             </div>
-
-            <!-- Bowl Container -->
             <div class="bowl-container" id="bowl" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <img src="bowl.jpg" alt="Food Bowl">
+                <img src="images/bowl.jpg" alt="Food Bowl">
             </div>
         </div>
-
-        <!-- Food Container -->
         <div class="food-container">
-            <img id="food" class="food" src="taco.jpg" alt="Taco" draggable="true" ondragstart="drag(event)">
+            <img id="food" class="food" src="images/taco.jpg" alt="Taco" draggable="true" ondragstart="drag(event)">
         </div>
-
-        <!-- Hunger Bar -->
         <div class="hunger-container">
             <div class="hunger-bar">
                 <div id="hungerFill"></div>
-                <span id="hungerText">Hunger bar: 50%</span>
+                <span id="hungerText">Hunger Meter: 50%</span>
             </div>
         </div>
-
-        <!-- Buttons -->
         <div class="buttons">
             <button onclick="trainPokemon()">Train</button>
         </div>
-
-        <!-- Stats -->
         <div class="stat">
             <p id="health">Health: 100%</p>
             <p id="happiness">Happiness: 100%</p>
@@ -207,101 +49,6 @@
         </div>
     </div>
 
-    <script>
-        // Initial Stats
-        let health = 100;
-        let happiness = 100;
-        let experience = 0;
-        let level = 1;
-        let hunger = 50; // Hunger starts at 50%
-        let pokemon = ""; // Chosen Pokémon
-        let pokemonImage = "";
-
-        // Decrease hunger over time (every 5 seconds)
-        setInterval(() => {
-            if (hunger > 0) {
-                hunger = Math.max(0, hunger - 1); // Decrease hunger by 1%
-                updateStats();
-            }
-        }, 5000); // 5000ms = 5 seconds
-
-        // Handle Pokémon selection
-        function choosePokemon(selectedPokemon) {
-            pokemon = selectedPokemon;
-            pokemonImage = getPokemonImage(selectedPokemon);
-
-            // Display chosen Pokémon
-            document.getElementById("pokemonImg").src = pokemonImage;
-            document.getElementById("selectionScreen").style.display = "none";
-            document.getElementById("gameScreen").style.display = "block";
-
-            updateStats();
-        }
-
-        // Get Pokémon image based on selection
-        function getPokemonImage(pokemon) {
-            const baseUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
-            const pokemonMap = {
-                "bulbasaur": "1.png",
-                "ivysaur": "2.png",
-                "venusaur": "3.png",
-                "charmander": "4.png",
-                "charmeleon": "5.png",
-                "charizard": "6.png",
-                "squirtle": "7.png",
-                "wartortle": "8.png",
-                "blastoise": "9.png"
-            };
-            return baseUrl + (pokemonMap[pokemon] || "1.png");
-        }
-
-        // Update the stats (Health, Happiness, Experience, Hunger)
-        function updateStats() {
-            document.getElementById('health').innerText = `Health: ${health}%`;
-            document.getElementById('happiness').innerText = `Happiness: ${happiness}%`;
-            document.getElementById('experience').innerText = `Experience: ${experience}`;
-            document.getElementById('level').innerText = `Level: ${level}`;
-
-            // Update Hunger Bar
-            document.getElementById('hungerFill').style.width = hunger + "%";
-            document.getElementById('hungerText').innerText = `Hunger Meter: ${hunger}%`;
-        }
-
-        // Allow food to be dropped into the bowl
-        function allowDrop(event) {
-            event.preventDefault(); // Allow the drop
-        }
-
-        // Handle food drop into the bowl
-        function drop(event) {
-            event.preventDefault();
-
-            // Feed Pokémon
-            feedPokemon();  // Replenish hunger
-        }
-
-        // Drag function to handle when the food is dragged
-        function drag(event) {
-            event.dataTransfer.setData("text/plain", event.target.id);
-        }
-
-        // Feed the Pokémon (replenish hunger)
-        function feedPokemon() {
-            if (hunger < 100) {
-                hunger = Math.min(100, hunger + 20); // Replenish 20% hunger
-                happiness = Math.min(100, happiness + 5); // Increase happiness
-                updateStats();
-            }
-        }
-
-        // Train Pokémon (increase experience)
-        function trainPokemon() {
-            experience += 10;
-            happiness = Math.max(0, happiness - 10); // Decrease happiness
-            level = Math.floor(experience / 50) + 1; // Level up every 50 XP
-            updateStats();
-        }
-    </script>
-
+    <script src="js/script.js"></script>
 </body>
 </html>
